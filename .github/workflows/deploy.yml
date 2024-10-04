@@ -1,4 +1,4 @@
-name: Deploy Angular to GitHub Pages
+ name: Deploy Angular to GitHub Pages
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  lint:
+  deploy:
     runs-on: ubuntu-20.04
 
     steps:
@@ -18,16 +18,26 @@ jobs:
       - name: Install dependencies
         run: npm install
         working-directory: ./HelloWorld
-     
+      
 
       # Étape 3 : Exécuter le linter
       - name: Run linter
         run: npm run lint
         working-directory: ./HelloWorld
 
-     
+      # Etape 4
+      - name: Build Angular Project
+        run: npm run build -- --output-path=docs --base-href=/pipelines/
+        working-directory: ./HelloWorld
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./HelloWorld/docs
+
 
       # Optionnel : Ajouter des notifications en cas d'erreur de lint
       - name: Notify on failure
         if: failure()
-        run: echo "Linting errors founds! Please fix them"
+        run: echo "Linting errors found! Please fix them."
