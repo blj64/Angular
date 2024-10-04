@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  deploy:
+  lint:
     runs-on: ubuntu-20.04
 
     steps:
@@ -30,3 +30,4 @@ jobs:
       # Optionnel : Ajouter des notifications en cas d'erreur de lint
       - name: Notify on failure
         if: failure()
+        run: echo "Linting errors founds! Please fix them"
