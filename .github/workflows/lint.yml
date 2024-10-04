@@ -1,0 +1,32 @@
+name: Deploy Angular to GitHub Pages
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+
+    steps:
+      # Étape 1 : Checkout du code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Étape 2 : Installer les dépendances (par exemple, npm install pour un projet JavaScript/TypeScript)
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./HelloWorld
+     
+
+      # Étape 3 : Exécuter le linter
+      - name: Run linter
+        run: npm run lint
+        working-directory: ./HelloWorld
+
+     
+
+      # Optionnel : Ajouter des notifications en cas d'erreur de lint
+      - name: Notify on failure
+        if: failure()
